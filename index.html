@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Quiz</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem auto;
+        max-width: 700px;
+        line-height: 1.5;
+        padding: 0 1rem;
+      }
+      fieldset {
+        margin-bottom: 1rem;
+      }
+      #result {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Quick Quiz</h1>
+    <form id="quiz-form">
+      <fieldset>
+        <legend>1) What does HTML stand for?</legend>
+        <label><input type="radio" name="q1" value="a" required /> HyperText Markup Language</label><br />
+        <label><input type="radio" name="q1" value="b" /> HighText Machine Language</label><br />
+        <label><input type="radio" name="q1" value="c" /> Hyperlinks and Text Markup Language</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>2) Which tag is used for JavaScript in HTML?</legend>
+        <label><input type="radio" name="q2" value="a" required /> &lt;style&gt;</label><br />
+        <label><input type="radio" name="q2" value="b" /> &lt;script&gt;</label><br />
+        <label><input type="radio" name="q2" value="c" /> &lt;code&gt;</label>
+      </fieldset>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p id="result" aria-live="polite"></p>
+
+    <script>
+      const answerKey = { q1: "a", q2: "b" };
+      const form = document.getElementById("quiz-form");
+      const result = document.getElementById("result");
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        const formData = new FormData(form);
+        let score = 0;
+
+        for (const key in answerKey) {
+          if (formData.get(key) === answerKey[key]) {
+            score += 1;
+          }
+        }
+
+        result.textContent = "You scored " + score + " out of " + Object.keys(answerKey).length + ".";
+      });
+    </script>
+  </body>
+</html>
