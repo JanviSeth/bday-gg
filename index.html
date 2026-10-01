@@ -1,65 +1,255 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Quiz</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        margin: 2rem auto;
-        max-width: 700px;
-        line-height: 1.5;
-        padding: 0 1rem;
-      }
-      fieldset {
-        margin-bottom: 1rem;
-      }
-      #result {
-        font-weight: 700;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>Quick Quiz</h1>
-    <form id="quiz-form">
-      <fieldset>
-        <legend>1) What does HTML stand for?</legend>
-        <label><input type="radio" name="q1" value="a" required /> HyperText Markup Language</label><br />
-        <label><input type="radio" name="q1" value="b" /> HighText Machine Language</label><br />
-        <label><input type="radio" name="q1" value="c" /> Hyperlinks and Text Markup Language</label>
-      </fieldset>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Janvi's Gift Guide 🎁</title>
+<style>
+  :root{--bg:#ffeef5;--card:#fff;--ink:#3a1728;--muted:#7d5468;--line:#f5cfe0;--soft:#fde3ee;--hover:#fff6fa;--note:#ffe1ee;--green:#ffe9f2;--btn:#d6336c;--btn-ink:#fff;--sec:#fbd7e6;--focus:#b0104f;
+    box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#2a1220;--card:#3a1c2e;--ink:#ffe9f3;--muted:#dcaac2;--line:#5e3449;--soft:#4b2740;--hover:#45233a;--note:#50293f;--green:#452339;--btn:#ff8fc0;--btn-ink:#2a1220;--sec:#4b2740;--focus:#ff8fc0}}
+  :root[data-theme="dark"]{--bg:#2a1220;--card:#3a1c2e;--ink:#ffe9f3;--muted:#dcaac2;--line:#5e3449;--soft:#4b2740;--hover:#45233a;--note:#50293f;--green:#452339;--btn:#ff8fc0;--btn-ink:#2a1220;--sec:#4b2740;--focus:#ff8fc0}
+  html{scroll-padding-top:env(safe-area-inset-top,0px)}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}
+  .card{background:var(--card);border-radius:22px;padding:28px;box-shadow:0 8px 30px rgba(214,51,108,.12);margin-bottom:18px}
+  h1{font-size:clamp(30px,6vw,48px);line-height:1.05;margin:0 0 12px}
+  h2{margin:0 0 10px;font-size:20px}
+  fieldset{border:0;padding:0;margin:28px 0}
+  legend{padding:0;font-weight:700;font-size:20px;margin-bottom:10px}
+  .sub{font-size:17px;line-height:1.55;color:var(--muted)}
+  .notice{background:var(--note);border-radius:16px;padding:16px;margin:20px 0;line-height:1.5}
+  label.option{display:block;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0;cursor:pointer;transition:.15s}
+  label.option:hover{border-color:#e58ab0;background:var(--hover)}
+  label.option:has(input:checked){border-color:var(--ink);background:var(--hover);box-shadow:inset 0 0 0 1px var(--ink)}
+  label.option input{margin-right:10px}
+  button,.btn{border:0;border-radius:14px;padding:14px 20px;font-size:16px;font-weight:700;cursor:pointer;background:var(--btn);color:var(--btn-ink)}
+  button.secondary{background:var(--sec);color:var(--ink)}
+  :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+  .progress{height:6px;border-radius:99px;background:var(--soft);overflow:hidden;margin:22px 0 0}
+  .progress i{display:block;height:100%;width:0;background:var(--ink);transition:width .25s}
+  .progress-label{font-size:13px;color:var(--muted);margin-top:6px}
+  .error{color:#b42318;font-weight:600;margin:12px 0;min-height:1em}
+  .result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+  .gift{border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column}
+  .gift h3{font-size:16px;margin:0 0 8px}
+  .price{font-weight:800;font-size:18px}
+  .each{font-weight:500;font-size:13px;color:var(--muted)}
+  .tag{align-self:flex-start;background:var(--soft);border-radius:999px;padding:5px 9px;font-size:12px;margin:0 0 10px}
+  .gift a{margin-top:auto;align-self:flex-start;text-decoration:none;background:var(--btn);color:var(--btn-ink);border-radius:10px;padding:9px 12px;font-weight:700;font-size:14px}
+  .gift .small{margin:8px 0 12px}
+  .small{font-size:13px;color:var(--muted);line-height:1.45}
+  .universal{background:var(--green);border-radius:16px;padding:18px;line-height:1.55;margin-top:18px}
+  .actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
+  a.btn{text-decoration:none;display:inline-block}
+  .footer{text-align:center;color:var(--muted);font-size:13px;margin-top:22px}
+  .hidden{display:none}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  label.option .d{display:block;font-size:14px;color:var(--muted);margin:3px 0 0 26px;line-height:1.4}
+  .hint{color:var(--muted);margin:-4px 0 8px;font-size:15px}
+  .lines{line-height:1.7}
+  h3.zone{margin:22px 0 0;font-size:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
 
-      <fieldset>
-        <legend>2) Which tag is used for JavaScript in HTML?</legend>
-        <label><input type="radio" name="q2" value="a" required /> &lt;style&gt;</label><br />
-        <label><input type="radio" name="q2" value="b" /> &lt;script&gt;</label><br />
-        <label><input type="radio" name="q2" value="c" /> &lt;code&gt;</label>
-      </fieldset>
+  <section class="card" id="quiz">
+    <div style="font-size:42px" aria-hidden="true">🎁🏠🎂</div>
+    <h1>Janvi's Gift Guide</h1>
+    <p class="sub">Welcome to the highly sophisticated system designed to help you figure out what, if anything, you might want to get me for my birthday + housewarming.</p>
 
-      <button type="submit">Submit</button>
+    <div class="notice lines">
+      <strong>First things first: you absolutely do not have to buy me anything.</strong> ❤️<br>
+      This is just for people who enjoy having some ideas rather than trying to guess what I might like.<br>
+      You also do not have to stick to this wishlist. If you have a better idea, go for it!<br>
+      Scented candles are always welcome.<br>
+      🎉 Or just bring yourself and come party!
+    </div>
+
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+    <div class="progress-label" id="plabel">0 of 5 answered</div>
+
+    <form id="giftForm">
+      <fieldset>
+        <legend>1. What is your Janvi clearance level?</legend>
+        <p class="hint">Don't worry, this is absolutely not a ranking. Probably.</p>
+        <label class="option"><input type="radio" name="relationship" value="inner" required> 🫶 Inner Circle / Bestie<span class="d">You know things about me that could probably be used against me.</span></label>
+        <label class="option"><input type="radio" name="relationship" value="close"> ❤️ Close Friend<span class="d">We've shared enough life that you know what's going on with me.</span></label>
+        <label class="option"><input type="radio" name="relationship" value="friend"> 🍻 Friend<span class="d">We hang out, have fun, and generally know each other pretty well.</span></label>
+        <label class="option"><input type="radio" name="relationship" value="acquaintance"> 👋 Acquaintance / Newer Friend<span class="d">We know each other, but let's not pretend you have my entire life story.</span></label>
+      </fieldset>
+      <fieldset>
+        <legend>2. What's your gifting philosophy?</legend>
+        <label class="option"><input type="radio" name="vibe" value="small" required> 🪙 A little something<span class="d">I want to bring something small and thoughtful.</span></label>
+        <label class="option"><input type="radio" name="vibe" value="proper"> 🎁 A proper present<span class="d">I'd like to get something nice.</span></label>
+        <label class="option"><input type="radio" name="vibe" value="nice"> ✨ I actually enjoy giving gifts<span class="d">Show me some of the good stuff.</span></label>
+        <label class="option"><input type="radio" name="vibe" value="group"> 👯 Let's make it a group project<span class="d">I'd rather contribute to something bigger with other people.</span></label>
+        <label class="option"><input type="radio" name="vibe" value="own"> 🧠 I already have my own idea<span class="d">I have decided to ignore the algorithm. Respect.</span></label>
+      </fieldset>
+      <fieldset>
+        <legend>3. What kind of gift are we looking for?</legend>
+        <label class="option"><input type="radio" name="category" value="home" required> 🏠 Housewarming<span class="d">Something for the new place.</span></label>
+        <label class="option"><input type="radio" name="category" value="kitchen"> 🍳 Kitchen / Cooking<span class="d">Help me build my unnecessarily well-equipped kitchen.</span></label>
+        <label class="option"><input type="radio" name="category" value="decor"> 🌿 Plants / Decor / Cosy Things<span class="d">Make my home progressively more Instagrammable.</span></label>
+        <label class="option"><input type="radio" name="category" value="fun"> 🎂 Birthday<span class="d">Something that's actually for me rather than the apartment.</span></label>
+        <label class="option"><input type="radio" name="category" value="surprise"> 🎲 Surprise me<span class="d">I have no particular plan. Let's see what happens.</span></label>
+      </fieldset>
+      <fieldset>
+        <legend>4. What's the procurement strategy?</legend>
+        <label class="option"><input type="radio" name="operation" value="solo" required> 🧍 Solo mission<span class="d">I am handling this myself.</span></label>
+        <label class="option"><input type="radio" name="operation" value="two"> 👯 Two-person operation<span class="d">I'm probably buying something with one other person.</span></label>
+        <label class="option"><input type="radio" name="operation" value="group"> 👨‍👩‍👧‍👦 Full group operation<span class="d">We're pooling money.</span></label>
+        <label class="option"><input type="radio" name="operation" value="unknown"> 🤷 TBD<span class="d">I have absolutely no idea yet.</span></label>
+      </fieldset>
+      <fieldset>
+        <legend>5. How much assistance do you require from the Gift Department?</legend>
+        <label class="option"><input type="radio" name="help" value="few" required> 📋 Give me a few options.<span class="d">I'll choose from a shortlist.</span></label>
+        <label class="option"><input type="radio" name="help" value="browse"> 🛒 I'll browse myself.<span class="d">Give me access to the relevant part of the wishlist.</span></label>
+        <label class="option"><input type="radio" name="help" value="reject"> 🦹 I reject the system.<span class="d">I have my own idea and I will not be controlled by an algorithm.</span></label>
+      </fieldset>
+      <div id="error" class="error" role="alert"></div>
+      <button type="submit">🎁 Show me gift ideas</button>
     </form>
+  </section>
 
-    <p id="result" aria-live="polite"></p>
+  <section class="card hidden" id="results" aria-live="polite">
+    <div style="font-size:38px" aria-hidden="true">🧪🎁</div>
+    <h2>Analysis Complete</h2>
+    <p class="sub">The Janvi Guide™ has processed your responses.</p>
+    <h3 class="zone">Your Gift Profile</h3>
+    <p id="profile" class="sub lines"></p>
+    <h3 class="zone" id="zoneTitle">🎁 Your recommended gift zone</h3>
+    <p class="hint" id="zoneSub">We've narrowed things down for you.</p>
+    <div id="giftGrid" class="result-grid"></div>
 
-    <script>
-      const answerKey = { q1: "a", q2: "b" };
-      const form = document.getElementById("quiz-form");
-      const result = document.getElementById("result");
+    <div class="universal" style="background:var(--soft)">
+      <strong>👯 Want to go bigger?</strong><br>
+      Some items on the wishlist are more expensive and are intended for group purchases.<br><br>
+      <button type="button" class="secondary" id="groupBtn">View group gifts →</button>
+      <div id="groupGrid" class="result-grid hidden"></div>
+    </div>
 
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
-        const formData = new FormData(form);
-        let score = 0;
+    <div class="universal lines">
+      <strong>🎉 And finally...</strong><br>
+      That's the whole guide. See you on the 24th, wearing something pink 🎀<br>
+      Now come eat, drink and judge my new apartment.
+    </div>
 
-        for (const key in answerKey) {
-          if (formData.get(key) === answerKey[key]) {
-            score += 1;
-          }
-        }
+    <div class="actions">
+      <button type="button" class="secondary" id="reroll">🎲 Show me different ideas</button>
+      <button type="button" class="secondary" id="restart">↩ Change my answers</button>
+      <a class="btn" id="wl" href="https://www.amazon.nl/hz/wishlist/ls/3EN4OGTFIF0VI?ref_=wl_share" target="_blank" rel="noopener">🛒 See the full wishlist</a>
+    </div>
+  </section>
 
-        result.textContent = "You scored " + score + " out of " + Object.keys(answerKey).length + ".";
-      });
-    </script>
-  </body>
+  <div class="footer">Made with love and an Amazon wishlist.</div>
+</div>
+
+<script>
+const gifts = [
+ {name:"2 Stuks Dunschiller",price:4.99,cat:"kitchen",level:1,url:"https://www.amazon.nl/dp/B0BQ7HF8SR/?coliid=IXPB3LLEXPD7P&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"De Buyer 24 cm Utility Tang",price:6.6,cat:"kitchen",level:1,url:"https://www.amazon.nl/dp/B001CG7806/?coliid=IFOEGZ5JOOMSD&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"JOPHEK Large Ice Cube Trays (2-pack)",price:6.99,cat:"kitchen",level:1,url:"https://www.amazon.nl/dp/B0C5R67D31/?coliid=I4O341U8EC2PO&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Scrub Mommy 2-pack",price:7.99,cat:"home",level:1,url:"https://www.amazon.nl/dp/B0BTFRKTY3/?coliid=I357BQDY5VV87X&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Kitchen Scissors",price:9.99,cat:"kitchen",level:1,url:"https://www.amazon.nl/dp/B09WRR11ZH/?coliid=I3NY2JC44XGFFB&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"BOSKA Copenhagen Pizza Cutter",price:9.99,cat:"kitchen",level:1,url:"https://www.amazon.nl/dp/B08LQL6XQQ/?coliid=I34GT4U7Y4UUB3&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Vitafit Digital Kitchen Scale",price:10.99,cat:"kitchen",level:2,url:"https://www.amazon.nl/dp/B08SGBS7RQ/?coliid=IBQHXWT1O0GN3&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Freestanding Toilet Roll Holder",price:10.99,cat:"home",level:2,url:"https://www.amazon.nl/dp/B0CBF6FXT2/?coliid=I2IX07G9P4YMXI&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"10-piece Stainless Measuring Cups & Spoons",price:11.99,cat:"kitchen",level:2,url:"https://www.amazon.nl/dp/B0C23K32LN/?coliid=IGOPL0ME25S3U&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Lavender Essential Oil 100 ml",price:11.99,cat:"decor",level:2,url:"https://www.amazon.nl/dp/B0C3B6F9Y3/?coliid=I8NS3FMA92XPJ&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"SHMSHNG Bubble Glasses (2-pack)",price:12.2,cat:"decor",level:2,url:"https://www.amazon.nl/dp/B0DX686XX9/?coliid=I1QTTQZCB6YAT1&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"TW1TGOFT Glass Mugs with Straws (2-pack)",price:13.98,cat:"decor",level:2,url:"https://www.amazon.nl/dp/B0G6Z3PLKH/?coliid=I2P3IZ9W1ZE0L5&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Zwilling Stainless Steel Sieve",price:14.24,cat:"kitchen",level:2,url:"https://www.amazon.nl/dp/B01LZ7882S/?coliid=I3NPXNADCOHJE3&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Alchemised Hardcover",price:16.95,cat:"fun",level:2,url:"https://www.amazon.nl/dp/0241714338/?coliid=I2FT8XBM80QMXX&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"ALINK Ribbed Glasses with Straws (2-pack)",price:16.99,cat:"decor",level:2,url:"https://www.amazon.nl/dp/B0CQ45Q4GF/?coliid=I1K9ZOZI99UXYJ&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"SALKING Aroma Diffuser",price:17.99,cat:"decor",level:2,url:"https://www.amazon.nl/dp/B0C5852YCQ/?coliid=I2ZOJC98SL195V&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Sondiko Refillable Kitchen Torch",price:19.99,cat:"kitchen",level:3,url:"https://www.amazon.nl/dp/B08Y5M5V3X/?coliid=I3OJ4A3ZVK0VMA&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"20-jar Rotating Spice Rack",price:26.99,cat:"kitchen",level:4,url:"https://www.amazon.nl/dp/B0C2V55WRS/?coliid=I87AL7M221D60&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Bamworld 5-tier Plant Stand",price:34.99,cat:"decor",level:5,url:"https://www.amazon.nl/dp/B0DZ2H3Q39/?coliid=IRQRDN9SP94VC&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"LEGO Botanicals Orchid",price:34.98,cat:"fun",level:5,url:"https://www.amazon.nl/dp/B09BNV2Q49/?coliid=I29GCD5ZYDWWQP&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Stölzle Lausitz Wine Glasses (6-pack)",price:36.55,cat:"decor",level:5,url:"https://www.amazon.nl/dp/B074DWYBCC/?coliid=I2K2R2CIHPSOPY&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Onaboviva Ceramic/Bamboo Aroma Diffuser",price:39.99,cat:"decor",level:5,url:"https://www.amazon.nl/dp/B0FFMKNQV4/?coliid=I2W2K8RPB2NM7B&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Arebos Induction Grill Plate 40x22 cm",price:69.9,cat:"kitchen",level:6,url:"https://www.amazon.nl/dp/B0CVB768V6/?coliid=I3FVESJ5SFGUXC&colid=3EN4OGTFIF0VI&psc=1"},
+ {name:"Le Creuset Cast Iron Casserole 20 cm, Shell Pink",price:179.0,cat:"kitchen",level:6,url:"https://www.amazon.nl/dp/B07W1K65LB/?coliid=I3CN3VS4HYCK0G&colid=3EN4OGTFIF0VI&psc=1"}
+];
+const TAGS={kitchen:"🍳 Kitchen",decor:"🌿 Home & decor",fun:"🎂 Fun",home:"🏠 Home"};
+const LABELS={rel:{inner:"🫶 Inner Circle / Bestie",close:"❤️ Close Friend",friend:"🍻 Friend",acquaintance:"👋 Acquaintance / Newer Friend"},
+ vibe:{small:"🪙 A little something",proper:"🎁 A proper present",nice:"✨ I actually enjoy giving gifts",group:"👯 Group project"},
+ cat:{home:"🏠 Housewarming",kitchen:"🍳 Kitchen / Cooking",decor:"🌿 Plants / Decor / Cosy Things",fun:"🎂 Birthday",surprise:"🎲 Surprise me"},
+ op:{solo:"🧍 Solo mission",two:"👯 Two-person operation",group:"👨‍👩‍👧‍👦 Full group operation",unknown:"🤷 TBD"}};
+const BLURB={"Vitafit Digital Kitchen Scale":"Something practical that will actually get used.","10-piece Stainless Measuring Cups & Spoons":"Because apparently I need approximately 47 different ways to measure things.","20-jar Rotating Spice Rack":"For when the collection of spices inevitably gets out of control.","Bamworld 5-tier Plant Stand":"For helping turn the apartment into a small indoor jungle."};
+const $=id=>document.getElementById(id);
+const form=$("giftForm"), KEYS=["relationship","vibe","category","operation","help"];
+let last=null, shown=new Set();
+const prefersReducedMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function scoreLevel(rel,vibe,op){
+  let max={inner:5,close:4,friend:3,acquaintance:2}[rel];
+  if(vibe==="small") max=Math.min(max,2);
+  if(vibe==="proper") max=Math.max(2,Math.min(max,4));
+  if(vibe==="nice") max=Math.min(5,Math.max(3,max));
+  if(vibe==="group"||op==="group") max=Math.min(5,max+2); else if(op==="two") max=Math.min(5,max+1);
+  return Math.min(5,max);
+}
+function categoryScore(g,cat){
+  if(cat==="surprise") return 0;
+  if(cat==="home") return g.cat==="home"?10:(g.cat==="kitchen"||g.cat==="decor")?8:0;
+  if(g.cat===cat) return 10;
+  if(cat==="decor"&&g.cat==="home") return 3;
+  if(cat==="fun"&&g.cat==="decor") return 2;
+  return 0;
+}
+function card(g,op){
+  const P=g.price;
+  const each=P==null?"":op==="two"?`<div class="each">≈ €${(P/2).toFixed(2)} each if you split it</div>`:(op==="group")?`<div class="each">Split 4 ways ≈ €${(P/4).toFixed(2)} each</div>`:"";
+  const note=BLURB[g.name]||(P>=100?"Big-ticket item: a proper group gift.":P>=50?"Best as a shared present.":P<10?"Small but mighty.":P<20?"A very respectable little present.":P<30?"Now we're getting serious.":"Premium territory.");
+  return `<div class="gift"><span class="tag">${TAGS[g.cat]}</span><h3>${g.name}</h3><div class="price">€${P.toFixed(2)}</div>${each}<p class="small">${note}</p><a href="${g.url}" target="_blank" rel="noopener">View on Amazon →</a></div>`;
+}
+function progress(){
+  const n=KEYS.filter(k=>form.elements[k].value).length;
+  $("bar").style.width=(n*20)+"%"; $("plabel").textContent=n+" of 5 answered";
+}
+form.addEventListener("change",progress);
+
+function render(reroll){
+  const {rel,vibe,cat,op,help}=last;
+  const rogue=vibe==="own"||help==="reject";
+  $("groupGrid").innerHTML=gifts.filter(g=>g.level>5).map(g=>card(g,"group")).join("");
+  $("groupGrid").classList.toggle("hidden",!(op==="group"||vibe==="group"));
+  $("groupBtn").textContent=$("groupGrid").classList.contains("hidden")?"View group gifts →":"Hide group gifts";
+  $("reroll").classList.toggle("hidden",rogue||help==="browse");
+  $("profile").innerHTML=`Janvi clearance: <strong>${LABELS.rel[rel]}</strong><br>Gifting philosophy: <strong>${vibe==="own"?"🧠 Own idea":LABELS.vibe[vibe]}</strong><br>Gift vibe: <strong>${LABELS.cat[cat]}</strong><br>Procurement: <strong>${LABELS.op[op]}</strong>`;
+  if(rogue){
+    $("zoneTitle").textContent="🦹 Rogue mode";$("zoneSub").textContent="";
+    $("giftGrid").innerHTML='<div class="gift"><h3>🧠 You have your own idea.</h3><p class="small">Excellent. Ignore this list. I say freestyle away.</p></div>';return;
+  }
+  if(help==="browse"){
+    $("zoneTitle").textContent="🛒 "+LABELS.cat[cat].slice(3);$("zoneSub").textContent="Have a browse. The full wishlist is right below.";
+    $("giftGrid").innerHTML='';return;
+  }
+  const max=scoreLevel(rel,vibe,op);
+  const scored=gifts.filter(g=>g.level<=5).map(g=>({g,score:categoryScore(g,cat)+(g.level<=max?8:-Math.abs(g.level-max)*3)+Math.random()*7-(reroll&&shown.has(g.name)?8:0)})).sort((a,b)=>b.score-a.score);
+  const n=4, picks=[];
+  for(const it of scored){ if(picks.length>=n) break; if(!picks.some(x=>Math.abs(x.g.price-it.g.price)<3)) picks.push(it); }
+  for(const it of scored) if(picks.length<n&&!picks.includes(it)) picks.push(it);
+  picks.sort((a,b)=>a.g.price-b.g.price); picks.forEach(p=>shown.add(p.g.name));
+  $("zoneTitle").textContent="🎁 Your recommended gift zone";$("zoneSub").textContent="We've narrowed things down for you: "+LABELS.cat[cat]+".";
+  $("giftGrid").innerHTML=picks.map(p=>card(p.g,op)).join("");
+}
+function show(w){ $("quiz").classList.toggle("hidden",w!=="quiz"); $("results").classList.toggle("hidden",w!=="results"); window.scrollTo({top:0,behavior:prefersReducedMotion?"auto":"smooth"}); }
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  if(KEYS.some(k=>!form.elements[k].value)){ $("error").textContent="Please answer all five questions first."; return; }
+  $("error").textContent="";
+  const f=form.elements;
+  last={rel:f.relationship.value,vibe:f.vibe.value,cat:f.category.value,op:f.operation.value,help:f.help.value};
+  shown=new Set(); render(false); show("results");
+});
+$("reroll").addEventListener("click",()=>render(true));
+$("restart").addEventListener("click",()=>show("quiz"));
+$("groupBtn").addEventListener("click",()=>{const g=$("groupGrid");g.classList.toggle("hidden");$("groupBtn").textContent=g.classList.contains("hidden")?"View group gifts →":"Hide group gifts";});
+</script>
+</body>
 </html>
